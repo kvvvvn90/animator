@@ -1,0 +1,238 @@
+/* All styling for the Animator app. Its code only attaches class names. */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; overflow: hidden; }
+
+/* ── Layout: two columns ─────────────────────────────────────────────────── */
+
+.app {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  background: #1a1a2e;
+  color: #d4c5a0;
+  font-family: system-ui, sans-serif;
+  font-size: 14px;
+}
+
+/* Left column: the code editor. */
+.code-col {
+  width: 42%;
+  min-width: 320px;
+  max-width: 720px;
+  flex-shrink: 0;
+  display: flex;
+  border-right: 1px solid #3a3a5e;
+  background: #0f0f1e;
+}
+
+/* The code column stays in the DOM when collapsed, so CodeMirror keeps its
+   state; hiding it gives the right column the full width. */
+.app.code-hidden .code-col { display: none; }
+
+/* A small emoji button (the code pane's collapse toggle, and the playback
+   controls once they exist). */
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #2a2a4a;
+  color: #d4c5a0;
+  border: 1px solid #4a4a8a;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  padding: 5px 8px;
+}
+.icon-btn:hover { background: #3a3a5e; }
+
+/* ── Code panel (left column) ───────────────────────────────────────────── */
+
+.code-panel {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  background: #1a1a3e;
+  border-bottom: 1px solid #3a3a5e;
+}
+.code-title {
+  color: #e8d8b0;
+  font-family: 'Georgia', serif;
+  font-size: 16px;
+  letter-spacing: 1px;
+}
+
+/* Wrapper holding the editor. */
+.code-editor-wrap {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  display: flex;
+}
+/* CodeMirror mount node: grows to fill the panel. */
+.code-editor {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  overflow: hidden;
+  background: #0d0d1a;
+}
+.code-editor .cm-editor { width: 100%; height: 100%; }
+
+/* Collapsible reference of the built-ins available to draw functions. */
+.reference {
+  margin: 8px 14px 0;
+  border: 1px solid #3a3a5e;
+  border-radius: 4px;
+  background: #0d0d1a;
+  overflow: hidden;
+}
+.reference-summary {
+  padding: 6px 12px;
+  cursor: pointer;
+  color: #b8a888;
+  font-family: monospace;
+  font-size: 12px;
+  user-select: none;
+}
+.reference-summary:hover { color: #e8d8b0; }
+.reference-body {
+  padding: 4px 12px 10px;
+  border-top: 1px solid #3a3a5e;
+}
+.reference-group { margin-top: 8px; }
+.reference-group-title {
+  color: #8a8aca;
+  font-family: monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 4px;
+}
+.reference-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  padding: 1px 0;
+}
+.reference-sig {
+  color: #89ddff;
+  font-family: monospace;
+  font-size: 12px;
+  white-space: pre;
+}
+.reference-desc { color: #6a7a8a; font-size: 11px; }
+
+/* ── Animation area (right column) ──────────────────────────────────────── */
+
+.canvas-area {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0a0a14;
+  container-type: size;
+}
+
+/* The interpreter's List(Path) (or its error), shown as text before the
+   animation pane is built. */
+.output {
+  align-self: stretch;
+  margin: 0;
+  padding: 16px;
+  overflow: auto;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #cfe3ff;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+/* Leave room for the reveal button, which only overlays this pane while the
+   code column is hidden. */
+.app.code-hidden .output { padding-top: 48px; }
+
+/* Button that reveals the code column again when it is hidden. */
+.reveal-code {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 10;
+}
+
+/* A centred square that fits the (possibly non-square) animation area. Give your
+   <canvas> this class, so that drawings aren't stretched. */
+.canvas {
+  width: min(100cqw, 100cqh);
+  height: min(100cqw, 100cqh);
+}
+
+
+/* Drawing studio */
+.studio { flex: 1; min-width: 0; display: flex; flex-direction: column; overflow: hidden; }
+.studio-header { display: flex; align-items: center; flex-wrap: wrap; gap: 14px; padding: 16px 20px; border-bottom: 1px solid #30304c; background: #121225; }
+.brand { margin-right: auto; }
+.brand h1 { font: 24px Georgia, serif; color: #eee5cd; letter-spacing: .03em; }
+.brand span { display: block; margin-top: 4px; font-size: 11px; color: #8b8ba9; }
+.library-controls, .playback-row, .export-row { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+select, .action-btn { font: inherit; color: #d4c5a0; border: 1px solid #414164; background: #22223c; border-radius: 7px; padding: 8px 12px; }
+select { min-width: 120px; max-width: 210px; }
+.action-btn { cursor: pointer; transition: background .15s; }
+.action-btn:hover { background: #333354; }
+.action-btn.primary { min-width: 76px; color: #101222; background: #89ddff; border-color: #89ddff; font-weight: 650; }
+.action-btn.primary:hover { background: #b2e9ff; }
+button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid #89ddff; outline-offset: 3px; }
+.canvas-area { min-height: 100px; }
+.canvas { display: block; flex: none; }
+.canvas-caption { position: absolute; bottom: 12px; right: 16px; font: 10px monospace; color: #55556f; pointer-events: none; }
+.controls { flex-shrink: 0; padding: 14px 20px; background: #121225; border-top: 1px solid #30304c; }
+.drawing-status { margin-left: auto; color: #8b8ba9; font: 12px monospace; }
+.slider-row { display: flex; gap: 24px; margin: 16px 0; }
+.slider-control { flex: 1; min-width: 0; }
+.slider-control label { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 12px; color: #b6b4cb; }
+.slider-value { font-family: monospace; color: #89ddff; }
+.slider-control input { display: block; width: 100%; accent-color: #89ddff; cursor: pointer; }
+.export-row { padding-top: 12px; border-top: 1px solid #2b2b46; }
+.export-row .action-btn { font-size: 12px; }
+.color-control { display: flex; align-items: center; gap: 8px; margin-right: auto; font-size: 12px; }
+.color-control input { width: 36px; height: 30px; padding: 2px; border: 1px solid #414164; border-radius: 5px; background: #22223c; cursor: pointer; }
+.error-message { flex-shrink: 0; max-height: 130px; overflow: auto; margin: 0; padding: 12px 20px; color: #ffc3b8; background: #351d2b; border-top: 1px solid #693343; font: 12px/1.6 monospace; white-space: pre-wrap; overflow-wrap: anywhere; }
+.fallback-editor { width: 100%; height: 100%; resize: none; padding: 16px; border: 0; outline: none; background: #0d0d1a; color: #d4c5a0; font: 13px/1.6 monospace; tab-size: 2; }
+.reference { flex-shrink: 0; margin-bottom: 8px; max-height: 40%; overflow-y: auto; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+@media (max-width: 900px) {
+  .code-col { width: 40%; min-width: 270px; }
+  .studio-header, .controls { padding: 12px; }
+  .library-controls { width: 100%; }
+  .library-controls select { flex: 1; max-width: none; }
+  .slider-row { gap: 16px; }
+}
+@media (max-width: 600px) {
+  .app { flex-direction: column; height: 100dvh; }
+  .code-col { width: 100%; max-width: none; min-width: 0; height: 34%; border-right: 0; border-bottom: 1px solid #30304c; }
+  .code-header { padding: 7px 12px; }
+  .reference { display: none; }
+  .studio-header { gap: 8px; padding: 8px 12px; }
+  .brand { display: none; }
+  .library-controls { width: auto; flex: 1; }
+  .library-controls select { min-width: 80px; width: 100px; }
+  .controls { padding: 10px 12px; }
+  .slider-row { margin: 10px 0; }
+  .export-row { gap: 6px; padding-top: 8px; }
+  .action-btn { padding: 7px 9px; }
+  .export-row .action-btn { font-size: 11px; padding: 7px; }
+}
